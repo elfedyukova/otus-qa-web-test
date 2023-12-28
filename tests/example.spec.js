@@ -1,45 +1,52 @@
 // @ts-check
 const { test, expect } = require('@playwright/test');
+const MainPage = require('../pages/main-page');
+const CartPage = require('../pages/cart-page');
 
 test('has title', async ({ page }) => {
-  await page.goto('https://1001dress.ru/');
+  const mainPage = new MainPage(page);
+  await mainPage.open();
 
-  // Expect a title "to contain" a substring.
   await expect(page).toHaveTitle(/1001 DRESS/);
 });
 
 test('has full title', async ({ page }) => {
-  await page.goto('https://1001dress.ru/');
+  const mainPage = new MainPage(page);
+  await mainPage.open();
   
-  // Expect a title "to contain" a string.
   await expect(page).toHaveTitle("1001 DRESS - Платье от производителя недорого");
 });
 
 test('Переход по ссылке на страницу Как оформить заказ', async ({ page }) => {
-  await page.goto('https://1001dress.ru/');
+  const mainPage = new MainPage(page);
+  await mainPage.open();
+  mainPage.clickOnHowDoOrder();
 
-  // Click the get started link.
-  await page.getByRole('link', { name: 'Как оформить заказ' }).click();
-
-  // Expects the URL to contain intro.
   await expect(page).toHaveURL(/.*how-order/);
 });
 
 test('Переход по ссылке в корзине на главную страницу', async ({ page }) => {
-  await page.goto('https://1001dress.ru/personal/cart/');
+  const cartPage = new CartPage(page);
+  await cartPage.open();
+  cartPage.clickOnCartEmptyBtn();
 
- // Click the get started link.
- await page.getByRole('link', { name: 'Нажмите здесь' }).click();
-
- // Expects the URL to contain intro.
  await expect(page).toHaveURL(/.\./);
   
 
 });
 
 test('Элемент корзина содержит текст Корзина', async ({ page }) => {
-  await page.goto('https://1001dress.ru/');
+  const mainPage = new MainPage(page);
+  await mainPage.open();
 
-const locator = page.locator("span[class='header__icon-num']");
-await expect(locator).toHaveText(/Корзина/);
+  const locator = page.locator("span[class='header__icon-num']");
+  await expect(locator).toHaveText(/Корзина/);
+});
+
+test('Переход на страницу all-dresses с главной', async ({ page }) => {
+  const mainPage = new MainPage(page);
+  await mainPage.open();
+  await mainPage.clickOnDressCatalog();
+
+  await expect(page).toHaveURL(/.*lookbook/);
 });
