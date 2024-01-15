@@ -30,7 +30,7 @@ test('Переход по ссылке в корзине на главную с�
   await cartPage.open();
   cartPage.clickOnCartEmptyBtn();
 
- await expect(page).toHaveURL(/.\./);
+  await expect(page).toHaveURL(/https:\/\/1001dress.ru\/$/);
   
 
 });
